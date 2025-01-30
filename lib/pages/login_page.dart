@@ -1,4 +1,6 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:youapp/pages/register_page.dart';
 
 const kLoginGradient = RadialGradient(
   center: Alignment(1.0, -0.3),
@@ -76,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 8),
                 // Back Button
                 TextButton.icon(
-                  onPressed: () => Navigator.pop(context),
+                  onPressed: () => Navigator.pushReplacementNamed(context, '/'),
                   icon: const Icon(
                     Icons.arrow_back_ios,
                     color: Colors.white,
@@ -117,7 +119,7 @@ class _LoginPageState extends State<LoginPage> {
                       fontSize: 16,
                     ),
                     filled: true,
-                    fillColor: const Color(0xFF2C2C2E),
+                    fillColor: Colors.white.withOpacity(0.06),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide.none,
@@ -163,7 +165,7 @@ class _LoginPageState extends State<LoginPage> {
                       fontSize: 16,
                     ),
                     filled: true,
-                    fillColor: const Color(0xFF2C2C2E),
+                    fillColor: Colors.white.withOpacity(0.06),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
                       borderSide: BorderSide.none,
@@ -291,14 +293,23 @@ class _LoginPageState extends State<LoginPage> {
                           color: Colors.white,
                           fontSize: 14,
                         ),
-                        children: const [
+                        children: [
                           TextSpan(
                             text: 'Register here',
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Color(0xFFD4AF37), // Gold/yellow color
                               fontSize: 14,
                               decoration: TextDecoration.underline,
                             ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const RegisterPage()),
+                                );
+                              },
                           ),
                         ],
                       ),

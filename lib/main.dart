@@ -1,10 +1,20 @@
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:youapp/pages/login_page.dart';
+import 'package:youapp/pages/register_page.dart';
 
 void main() {
   runApp(const MyApp());
 }
+
+const kBackgroundGradientColors = [
+  Color(0xFF1F4247),
+  Color(0xFF0D1D23),
+  Color(0xFF09141A),
+];
+
+const kBackgroundGradientStops = [0.0, 0.5618, 1.0];
 
 class AvatarCircles extends StatefulWidget {
   const AvatarCircles({super.key});
@@ -52,109 +62,139 @@ class NotificationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            children: [
-              const SizedBox(height: 20),
-              // Animated Time Display
-              TweenAnimationBuilder<double>(
-                tween: Tween(begin: 0.0, end: 1.0),
-                duration: const Duration(milliseconds: 800),
-                curve: Curves.easeOutBack,
-                builder: (context, value, child) {
-                  return Transform.scale(
-                    scale: value,
-                    child: const Text(
-                      '9:41',
-                      style: TextStyle(
-                        fontSize: 64,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  );
-                },
-              ),
-              const SizedBox(height: 30),
-              // Notification Cards with staggered animation
-              NotificationCard(
-                name: 'Lia Marie',
-                action: 'Added 23 photos to Outings.',
-                avatarUrl:
-                    'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=faces',
-                time: '20m',
-              ),
-              const SizedBox(height: 10),
-              NotificationCard(
-                name: 'Thom Avril',
-                action: 'Is eating at Dome, Joondalup.',
-                avatarUrl:
-                    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=faces',
-                time: '30m',
-              ),
-              const SizedBox(height: 40),
-              // Avatar Circles with floating animation
-              const AvatarCircles(),
-              const SizedBox(height: 40),
-              // Animated bottom content
-              TweenAnimationBuilder<double>(
-                tween: Tween(begin: 0.0, end: 1.0),
-                duration: const Duration(milliseconds: 800),
-                curve: Curves.easeOut,
-                builder: (context, value, child) {
-                  return Opacity(
-                    opacity: value,
-                    child: Transform.translate(
-                      offset: Offset(0, 20 * (1 - value)),
-                      child: child,
-                    ),
-                  );
-                },
-                child: Column(
-                  children: [
-                    const Text(
-                      "Don't miss out on what your\nfriends are up to",
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    const Text(
-                      'Never miss those precious moments.',
-                      style: TextStyle(
-                        color: Colors.grey,
-                        fontSize: 16,
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-                    ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.black,
-                        foregroundColor: Colors.white,
-                        minimumSize: const Size(double.infinity, 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(25),
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: RadialGradient(
+          center: Alignment(1.0, -0.3),
+          radius: 1.2,
+          colors: kBackgroundGradientColors,
+          stops: kBackgroundGradientStops,
+        ),
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        body: SafeArea(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                children: [
+                  const SizedBox(height: 20),
+                  // Animated Time Display
+                  TweenAnimationBuilder<double>(
+                    tween: Tween(begin: 0.0, end: 1.0),
+                    duration: const Duration(milliseconds: 800),
+                    curve: Curves.easeOutBack,
+                    builder: (context, value, child) {
+                      return Transform.scale(
+                        scale: value,
+                        child: Text(
+                          'YouApp',
+                          style: TextStyle(
+                            fontSize: 64,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Chicle',
+                            color: Colors.white,
+                          ),
                         ),
-                      ),
-                      child: const Text('Turn on notifications'),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 30),
+                  // Notification Cards with staggered animation
+                  NotificationCard(
+                    name: 'Lia Marie',
+                    action: 'Added 23 photos to Outings.',
+                    avatarUrl:
+                        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop&crop=faces',
+                    time: '20m',
+                  ),
+                  const SizedBox(height: 20),
+                  NotificationCard(
+                    name: 'Thom Avril',
+                    action: 'Is eating at Dome, Joondalup.',
+                    avatarUrl:
+                        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=faces',
+                    time: '30m',
+                  ),
+                  const SizedBox(height: 40),
+                  // Avatar Circles with floating animation
+                  const AvatarCircles(),
+                  const SizedBox(height: 40),
+                  // Animated bottom content
+                  TweenAnimationBuilder<double>(
+                    tween: Tween(begin: 0.0, end: 1.0),
+                    duration: const Duration(milliseconds: 800),
+                    curve: Curves.easeOut,
+                    builder: (context, value, child) {
+                      return Opacity(
+                        opacity: value,
+                        child: Transform.translate(
+                          offset: Offset(0, 20 * (1 - value)),
+                          child: child,
+                        ),
+                      );
+                    },
+                    child: Column(
+                      children: [
+                        Text(
+                          "Don't miss out on what your\nfriends are up to",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          'Never miss those precious moments.',
+                          style: TextStyle(
+                            color: Colors.white.withOpacity(0.7),
+                            fontSize: 16,
+                          ),
+                        ),
+                        const SizedBox(height: 20),
+                        ElevatedButton(
+                          onPressed: () {
+                            // Navigate to the login screen
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => LoginPage()),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color(0xFF62CDCB),
+                            foregroundColor: Colors.white,
+                            minimumSize: const Size(double.infinity, 50),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                          ),
+                          child: const Text('Login'),
+                        ),
+                        const SizedBox(height: 10),
+                        TextButton(
+                          onPressed: () {
+                            // Navigate to the register screen
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => RegisterPage()),
+                            );
+                          },
+                          child: const Text(
+                            'Register',
+                            style: TextStyle(color: Color(0xFFD4AF37)),
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 10),
-                    TextButton(
-                      onPressed: () {},
-                      child: const Text(
-                        'Another time',
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
+            ),
           ),
         ),
       ),
@@ -281,6 +321,7 @@ class _NotificationCardState extends State<NotificationCard>
   late AnimationController _controller;
   late Animation<double> _scaleAnimation;
   late Animation<double> _fadeAnimation;
+  late Animation<Color?> _colorAnimation;
 
   @override
   Widget build(BuildContext context) {
@@ -297,11 +338,11 @@ class _NotificationCardState extends State<NotificationCard>
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(15),
                 boxShadow: [
-                  // Outer glow effect
                   BoxShadow(
-                    color: Colors.purple.withOpacity(0.03),
-                    spreadRadius: 7,
-                    blurRadius: 10,
+                    color: _colorAnimation.value ??
+                        Colors.purple.withOpacity(0.03),
+                    spreadRadius: 2,
+                    blurRadius: 5,
                     offset: const Offset(0, 0),
                   ),
                   // Inner sharper glow
@@ -367,9 +408,9 @@ class _NotificationCardState extends State<NotificationCard>
   void initState() {
     super.initState();
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 500),
+      duration: const Duration(seconds: 2),
       vsync: this,
-    );
+    )..repeat(reverse: true);
 
     _scaleAnimation = Tween<double>(begin: 0.8, end: 1.0).animate(
       CurvedAnimation(
@@ -382,6 +423,16 @@ class _NotificationCardState extends State<NotificationCard>
       CurvedAnimation(
         parent: _controller,
         curve: Curves.easeIn,
+      ),
+    );
+
+    _colorAnimation = ColorTween(
+      begin: Colors.red,
+      end: Colors.purple,
+    ).animate(
+      CurvedAnimation(
+        parent: _controller,
+        curve: Curves.linear,
       ),
     );
 
