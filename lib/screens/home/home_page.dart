@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'components/about_edit_card.dart';
+import 'components/interest_edit_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,6 +16,7 @@ class _HomePageState extends State<HomePage>
   late AnimationController _animationController;
   late Animation<double> _heightAnimation;
   late Animation<double> _fadeAnimation;
+  List<String> _interests = [];
 
   @override
   Widget build(BuildContext context) {
@@ -142,8 +144,22 @@ class _HomePageState extends State<HomePage>
                           title: 'Interest',
                           subtitle:
                               'Add in your interest to find a better match',
-                          onTap: () {
-                            // Handle interest section tap
+                          onTap: () async {
+                            final List<String>? updatedInterests =
+                                await Navigator.push<List<String>>(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const InterestEditPage()),
+                            );
+
+                            if (updatedInterests != null) {
+                              // Handle the updated interests here
+                              setState(() {
+                                // Update your interests state variable
+                                _interests = updatedInterests;
+                              });
+                            }
                           },
                         ),
                         const SizedBox(height: 18), // Add bottom padding
