@@ -23,134 +23,40 @@ class RegisterPage extends StatefulWidget {
   State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
-  bool isPasswordVisible = false;
-  bool isConfirmPasswordVisible = false;
-  final _emailController = TextEditingController();
-  final _usernameController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _confirmPasswordController = TextEditingController();
-  String? _emailError;
-  String? _usernameError;
-  String? _passwordError;
-  String? _confirmPasswordError;
-
-  bool get _isFormValid =>
-      _emailError == null &&
-      _usernameError == null &&
-      _passwordError == null &&
-      _confirmPasswordError == null &&
-      _emailController.text.isNotEmpty &&
-      _usernameController.text.isNotEmpty &&
-      _passwordController.text.isNotEmpty &&
-      _confirmPasswordController.text.isNotEmpty;
+class _BackButton extends StatelessWidget {
+  const _BackButton();
 
   @override
   Widget build(BuildContext context) {
-    _emailController.addListener(_updateFormState);
-    _usernameController.addListener(_updateFormState);
-    _passwordController.addListener(_updateFormState);
-    _confirmPasswordController.addListener(_updateFormState);
-
-    return Scaffold(
-      body: Container(
-        decoration: const BoxDecoration(gradient: kLoginGradient),
-        child: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 8),
-                TextButton.icon(
-                  onPressed: () => Navigator.pushReplacementNamed(context, '/'),
-                  icon: const Icon(
-                    Icons.arrow_back_ios,
-                    color: Colors.white,
-                    size: 20,
-                  ),
-                  label: const Text(
-                    'Back',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 32),
-                const Text(
-                  'Register',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 32),
-                _buildTextField(
-                  controller: _emailController,
-                  hintText: 'Enter Email',
-                  errorText: _emailError,
-                ),
-                const SizedBox(height: 16),
-                _buildTextField(
-                  controller: _usernameController,
-                  hintText: 'Create Username',
-                  errorText: _usernameError,
-                ),
-                const SizedBox(height: 16),
-                _buildTextField(
-                  controller: _passwordController,
-                  hintText: 'Enter Password',
-                  errorText: _passwordError,
-                  isPassword: true,
-                  isPasswordVisible: isPasswordVisible,
-                  onTogglePasswordVisibility: () {
-                    setState(() {
-                      isPasswordVisible = !isPasswordVisible;
-                    });
-                  },
-                ),
-                const SizedBox(height: 16),
-                _buildTextField(
-                  controller: _confirmPasswordController,
-                  hintText: 'Confirm Password',
-                  errorText: _confirmPasswordError,
-                  isPassword: true,
-                  isPasswordVisible: isConfirmPasswordVisible,
-                  onTogglePasswordVisibility: () {
-                    setState(() {
-                      isConfirmPasswordVisible = !isConfirmPasswordVisible;
-                    });
-                  },
-                ),
-                const SizedBox(height: 24),
-                _buildRegisterButton(),
-                const Spacer(),
-                _buildLoginLink(),
-              ],
+    return Column(
+      children: [
+        const SizedBox(height: 8),
+        TextButton.icon(
+          onPressed: () => Navigator.pushReplacementNamed(context, '/'),
+          icon: const Icon(
+            Icons.arrow_back_ios,
+            color: Colors.white,
+            size: 20,
+          ),
+          label: const Text(
+            'Back',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
             ),
           ),
         ),
-      ),
+      ],
     );
   }
+}
+
+class _LoginLink extends StatelessWidget {
+  const _LoginLink();
 
   @override
-  void dispose() {
-    _emailController.removeListener(_updateFormState);
-    _usernameController.removeListener(_updateFormState);
-    _passwordController.removeListener(_updateFormState);
-    _confirmPasswordController.removeListener(_updateFormState);
-    _emailController.dispose();
-    _usernameController.dispose();
-    _passwordController.dispose();
-    _confirmPasswordController.dispose();
-    super.dispose();
-  }
-
-  Widget _buildLoginLink() {
+  Widget build(BuildContext context) {
     return Center(
       child: Padding(
         padding: const EdgeInsets.only(bottom: 32),
@@ -160,13 +66,13 @@ class _RegisterPageState extends State<RegisterPage> {
             MaterialPageRoute(builder: (context) => const LoginPage()),
           ),
           child: RichText(
-            text: TextSpan(
+            text: const TextSpan(
               text: 'Have an account? ',
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.white,
                 fontSize: 14,
               ),
-              children: const [
+              children: [
                 TextSpan(
                   text: 'Login here',
                   style: TextStyle(
@@ -182,12 +88,20 @@ class _RegisterPageState extends State<RegisterPage> {
       ),
     );
   }
+}
 
-  Widget _buildRegisterButton() {
+class _RegisterButton extends StatelessWidget {
+  final bool isFormValid;
+  final VoidCallback? onPressed;
+
+  const _RegisterButton({required this.isFormValid, this.onPressed});
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
-        boxShadow: _isFormValid
+        boxShadow: isFormValid
             ? [
                 BoxShadow(
                   color: const Color(0xFF62CDCB).withOpacity(0.5),
@@ -203,7 +117,7 @@ class _RegisterPageState extends State<RegisterPage> {
             : [],
       ),
       child: ElevatedButton(
-        onPressed: _isFormValid ? _validateInputs : null,
+        onPressed: isFormValid ? onPressed : null,
         style: ElevatedButton.styleFrom(
           padding: EdgeInsets.zero,
           minimumSize: const Size(double.infinity, 56),
@@ -218,10 +132,10 @@ class _RegisterPageState extends State<RegisterPage> {
           decoration: BoxDecoration(
             gradient: LinearGradient(
               colors: [
-                _isFormValid
+                isFormValid
                     ? const Color(0xFF62CDCB)
                     : const Color(0xFF62CDCB).withOpacity(0.3),
-                _isFormValid
+                isFormValid
                     ? const Color(0xFF4599DB)
                     : const Color(0xFF4599DB).withOpacity(0.3),
               ],
@@ -239,7 +153,7 @@ class _RegisterPageState extends State<RegisterPage> {
               duration: const Duration(milliseconds: 300),
               style: TextStyle(
                 color:
-                    _isFormValid ? Colors.white : Colors.white.withOpacity(0.5),
+                    isFormValid ? Colors.white : Colors.white.withOpacity(0.5),
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
               ),
@@ -249,6 +163,111 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
       ),
     );
+  }
+}
+
+class _RegisterPageState extends State<RegisterPage> {
+  bool _isPasswordVisible = false;
+  bool _isConfirmPasswordVisible = false;
+
+  final _formControllers = {
+    'email': TextEditingController(),
+    'username': TextEditingController(),
+    'password': TextEditingController(),
+    'confirmPassword': TextEditingController(),
+  };
+
+  final _formErrors = <String, String?>{
+    'email': null,
+    'username': null,
+    'password': null,
+    'confirmPassword': null,
+  };
+
+  bool get _isFormValid =>
+      _formErrors.values.every((error) => error == null) &&
+      _formControllers.values
+          .every((controller) => controller.text.isNotEmpty) &&
+      _formControllers['password']!.text ==
+          _formControllers['confirmPassword']!.text &&
+      _validateEmail(_formControllers['email']!.text);
+
+  @override
+  Widget build(BuildContext context) {
+    for (var controller in _formControllers.values) {
+      controller.addListener(_updateFormState);
+    }
+
+    return Scaffold(
+      body: Container(
+        decoration: const BoxDecoration(gradient: kLoginGradient),
+        child: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const _BackButton(),
+                const SizedBox(height: 32),
+                const _RegisterTitle(),
+                const SizedBox(height: 32),
+                ..._buildFormFields(),
+                const SizedBox(height: 24),
+                _RegisterButton(
+                    isFormValid: _isFormValid, onPressed: _validateInputs),
+                const Spacer(),
+                const _LoginLink(),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    for (var controller in _formControllers.values) {
+      controller.removeListener(_updateFormState);
+      controller.dispose();
+    }
+    super.dispose();
+  }
+
+  List<Widget> _buildFormFields() {
+    return [
+      _buildTextField(
+        controller: _formControllers['email']!,
+        hintText: 'Enter Email',
+        errorText: _formErrors['email'],
+      ),
+      const SizedBox(height: 16),
+      _buildTextField(
+        controller: _formControllers['username']!,
+        hintText: 'Create Username',
+        errorText: _formErrors['username'],
+      ),
+      const SizedBox(height: 16),
+      _buildTextField(
+        controller: _formControllers['password']!,
+        hintText: 'Enter Password',
+        errorText: _formErrors['password'],
+        isPassword: true,
+        isPasswordVisible: _isPasswordVisible,
+        onTogglePasswordVisibility: () =>
+            setState(() => _isPasswordVisible = !_isPasswordVisible),
+      ),
+      const SizedBox(height: 16),
+      _buildTextField(
+        controller: _formControllers['confirmPassword']!,
+        hintText: 'Confirm Password',
+        errorText: _formErrors['confirmPassword'],
+        isPassword: true,
+        isPasswordVisible: _isConfirmPasswordVisible,
+        onTogglePasswordVisibility: () => setState(
+            () => _isConfirmPasswordVisible = !_isConfirmPasswordVisible),
+      ),
+    ];
   }
 
   Widget _buildTextField({
@@ -318,44 +337,63 @@ class _RegisterPageState extends State<RegisterPage> {
     setState(() {});
   }
 
+  String? _validateConfirmPasswordField() {
+    final confirmPassword = _formControllers['confirmPassword']!.text;
+    if (confirmPassword.isEmpty) return 'Please confirm your password';
+    if (confirmPassword != _formControllers['password']!.text)
+      return 'Passwords do not match';
+    return null;
+  }
+
   bool _validateEmail(String email) {
-    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    final emailRegex = RegExp(
+        r'^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$');
     return emailRegex.hasMatch(email);
+  }
+
+  String? _validateEmailField() {
+    final email = _formControllers['email']!.text;
+    if (email.isEmpty) return 'Email is required';
+    if (!_validateEmail(email)) return 'Invalid email format';
+    return null;
   }
 
   void _validateInputs() {
     setState(() {
-      if (_emailController.text.isEmpty) {
-        _emailError = 'Email is required';
-      } else if (!_validateEmail(_emailController.text)) {
-        _emailError = 'Invalid email format';
-      } else {
-        _emailError = null;
-      }
-
-      if (_usernameController.text.isEmpty) {
-        _usernameError = 'Username is required';
-      } else if (_usernameController.text.length < 3) {
-        _usernameError = 'Username must be at least 3 characters';
-      } else {
-        _usernameError = null;
-      }
-
-      if (_passwordController.text.isEmpty) {
-        _passwordError = 'Password is required';
-      } else if (_passwordController.text.length < 6) {
-        _passwordError = 'Password must be at least 6 characters';
-      } else {
-        _passwordError = null;
-      }
-
-      if (_confirmPasswordController.text.isEmpty) {
-        _confirmPasswordError = 'Please confirm your password';
-      } else if (_confirmPasswordController.text != _passwordController.text) {
-        _confirmPasswordError = 'Passwords do not match';
-      } else {
-        _confirmPasswordError = null;
-      }
+      _formErrors['email'] = _validateEmailField();
+      _formErrors['username'] = _validateUsernameField();
+      _formErrors['password'] = _validatePasswordField();
+      _formErrors['confirmPassword'] = _validateConfirmPasswordField();
     });
+  }
+
+  String? _validatePasswordField() {
+    final password = _formControllers['password']!.text;
+    if (password.isEmpty) return 'Password is required';
+    if (password.length < 6) return 'Password must be at least 6 characters';
+    return null;
+  }
+
+  String? _validateUsernameField() {
+    final username = _formControllers['username']!.text;
+    if (username.isEmpty) return 'Username is required';
+    if (username.length < 3) return 'Username must be at least 3 characters';
+    return null;
+  }
+}
+
+class _RegisterTitle extends StatelessWidget {
+  const _RegisterTitle();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text(
+      'Register',
+      style: TextStyle(
+        color: Colors.white,
+        fontSize: 32,
+        fontWeight: FontWeight.bold,
+      ),
+    );
   }
 }
