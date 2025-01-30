@@ -1,6 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:youapp/pages/register_page.dart';
+import 'package:youapp/screens/auth/register_page.dart';
 
 const kLoginGradient = RadialGradient(
   center: Alignment(1.0, -0.3),

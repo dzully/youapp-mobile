@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:youapp/pages/login_page.dart';
+import 'package:youapp/screens/auth/login_page.dart';
 
 const kLoginGradient = RadialGradient(
   center: Alignment(1.0, -0.3),

@@ -94,3 +94,11 @@ flutter:
     - family: Chicle
       fonts:
         - asset: assets/fonts/Chicle-Regular.ttf
+
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto-Regular.ttf
+
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter-Regular.ttf
