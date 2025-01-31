@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../utils/animation_utils.dart';
+import '../../../core/utils/animation_utils.dart';
 
 class AvatarCircles extends StatefulWidget {
   const AvatarCircles({super.key});

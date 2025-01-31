@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../utils/animation_utils.dart';
+import '../../../core/utils/animation_utils.dart';
 
 class AnimatedAppTitle extends StatelessWidget {
   const AnimatedAppTitle({super.key});

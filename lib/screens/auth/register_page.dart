@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:youapp/screens/auth/login_page.dart';
+import 'package:youapp/screens/welcome/welcome_page.dart';
 
 const kLoginGradient = RadialGradient(
   center: Alignment(1.0, -0.3),
@@ -32,7 +33,30 @@ class _BackButton extends StatelessWidget {
       children: [
         const SizedBox(height: 8),
         TextButton.icon(
-          onPressed: () => Navigator.pushReplacementNamed(context, '/'),
+          onPressed: () {
+            Navigator.of(context).pushReplacement(
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) =>
+                    const WelcomePage(),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) {
+                  const begin = Offset(-1.0, 0.0);
+                  const end = Offset.zero;
+                  const curve = Curves.easeInOut;
+
+                  var tween = Tween(begin: begin, end: end)
+                      .chain(CurveTween(curve: curve));
+                  var offsetAnimation = animation.drive(tween);
+
+                  return SlideTransition(
+                    position: offsetAnimation,
+                    child: child,
+                  );
+                },
+                transitionDuration: const Duration(milliseconds: 300),
+              ),
+            );
+          },
           icon: const Icon(
             Icons.arrow_back_ios,
             color: Colors.white,

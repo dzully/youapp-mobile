@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-import '../constants/style_constants.dart';
+import '../../../core/constants/style_constants.dart';
 
-class NotificationCard extends StatefulWidget {
+class WelcomeCard extends StatefulWidget {
   final String name;
   final String action;
   final String avatarUrl;
   final String time;
 
-  const NotificationCard({
+  const WelcomeCard({
     super.key,
     required this.name,
     required this.action,
@@ -17,10 +17,10 @@ class NotificationCard extends StatefulWidget {
   });
 
   @override
-  State<NotificationCard> createState() => _NotificationCardState();
+  State<WelcomeCard> createState() => _WelcomeCardState();
 }
 
-class _NotificationCardState extends State<NotificationCard>
+class _WelcomeCardState extends State<WelcomeCard>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
   late final Animation<double> _scaleAnimation;
